@@ -20,9 +20,9 @@
       "LoadingPhase": "Default"
     },
     {
-			"Name": "MirrorEditor",
-			"Type": "Editor",
-			"LoadingPhase": "Default"
+      "Name": "MirrorEditor",
+      "Type": "Editor",
+      "LoadingPhase": "Default"
     }
 	]
 }

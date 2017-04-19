@@ -35,13 +35,13 @@ public class MirrorEditor : ModuleRules
 		PrivateDependencyModuleNames.AddRange(
 			new string[]
 			{
-				"CoreUObject",
+                "CoreUObject",
                 "UnrealEd",
                 "Engine",
                 "Slate",
                 "SlateCore",
                 "EditorStyle",
-                 "MirrorRuntime",
+                "MirrorRuntime",
 				// ... add private dependencies that you statically link with here ...	
 			}
 			);
