@@ -1,0 +1,28 @@
+{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "1.0",
+	"FriendlyName": "Mirror",
+	"Description": "Easy create mirror actor about mirror center.",
+	"Category": "Other",
+	"CreatedBy": "XFW",
+	"CreatedByURL": "",
+	"DocsURL": "",
+	"MarketplaceURL": "",
+	"SupportURL": "",
+	"CanContainContent": true,
+	"IsBetaVersion": false,
+	"Installed": false,
+	"Modules": [
+    {
+      "Name": "MirrorRuntime",
+      "Type": "Runtime",
+      "LoadingPhase": "Default"
+    },
+    {
+			"Name": "MirrorEditor",
+			"Type": "Editor",
+			"LoadingPhase": "Default"
+		}
+	]
+}
