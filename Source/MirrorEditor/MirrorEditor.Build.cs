@@ -38,10 +38,10 @@ public class MirrorEditor : ModuleRules
 				"CoreUObject",
                 "UnrealEd",
                 "Engine",
-				"Slate",
-				"SlateCore",
+                "Slate",
+                "SlateCore",
                 "EditorStyle",
-                "MirrorRuntime",
+                 "MirrorRuntime",
 				// ... add private dependencies that you statically link with here ...	
 			}
 			);

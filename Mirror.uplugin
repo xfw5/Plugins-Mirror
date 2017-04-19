@@ -23,6 +23,6 @@
 			"Name": "MirrorEditor",
 			"Type": "Editor",
 			"LoadingPhase": "Default"
-		}
+    }
 	]
 }
