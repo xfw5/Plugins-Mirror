@@ -19,6 +19,8 @@ UMirrorComponent::UMirrorComponent()
 	PrimaryComponentTick.bCanEverTick = true;
 
 	UpdateTransformTolerance = 0.0001f;
+	bLockedUpdate = false;
+	bTeleportPhysics = false;
 }
 
 void UMirrorComponent::OnRegister()
@@ -64,8 +66,9 @@ bool UMirrorComponent::GetMirrorLocationAndRotation(FVector& OutLocation, FRotat
 
 void UMirrorComponent::TransformUpdate(USceneComponent* UpdatedComponent, EUpdateTransformFlags UpdateTransformFlags, ETeleportType Teleport)
 {
-	if (!MirrorActor) return;
+	if (!MirrorActor || bLockedUpdate) return;
 
+	bLockedUpdate = true;
 	if (MirrorSpace == EMirrorSpace::LocalSpace)
 	{
 		const FTransform RelativeTransform = GetOwner()->GetRootComponent()->GetRelativeTransform();
@@ -94,17 +97,16 @@ void UMirrorComponent::TransformUpdate(USceneComponent* UpdatedComponent, EUpdat
 		FRotator DesireMirrorRotation;
 		if (GetMirrorLocationAndRotation(DesireMirrorLocation, DesireMirrorRotation))
 		{
-			if (!DesireMirrorLocation.Equals(MirrorLocation, UpdateTransformTolerance))
+			if (!DesireMirrorLocation.Equals(MirrorLocation, UpdateTransformTolerance) || 
+				DesireMirrorRotation.Equals(MirrrorRotation, UpdateTransformTolerance))
 			{
-				MirrorActor->SetActorLocation(DesireMirrorLocation);
-			}
-
-			if (!DesireMirrorRotation.Equals(MirrrorRotation, UpdateTransformTolerance))
-			{
-				MirrorActor->SetActorRotation(DesireMirrorRotation);
+				MirrorActor->SetActorLocationAndRotation(DesireMirrorLocation, DesireMirrorRotation, false, nullptr, \
+												bTeleportPhysics ? ETeleportType::TeleportPhysics : ETeleportType::None);
 			}
 		}
 	}
+
+	bLockedUpdate = false;
 }
 
 #if WITH_EDITOR
@@ -161,6 +163,7 @@ void UMirrorComponent::CopyMirrorSetting(UMirrorComponent* MirrorComp)
 	MirrorComp->MirrorCenter = MirrorCenter;
 	MirrorComp->MirrorActor = GetOwner();
 	MirrorComp->UpdateTransformTolerance = UpdateTransformTolerance;
+	MirrorComp->bTeleportPhysics = bTeleportPhysics;
 }
 
 bool UMirrorComponent::CheckPhysicsSetting(AActor* InMirrorActor)

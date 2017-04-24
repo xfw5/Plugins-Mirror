@@ -45,6 +45,13 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, category = "Mirror")
 	AActor* MirrorActor;
 
+	UPROPERTY(EditInstanceOnly, BlueprintReadWrite, category = "Mirror")
+	uint32 bTeleportPhysics : 1;
+
+	/* Locked transform update notify to avoid infinite update cause of mirror actor referenced by each other. */
+	UPROPERTY(Transient)
+	uint32 bLockedUpdate : 1;
+
 public:	
 
 	virtual void OnRegister() override;
