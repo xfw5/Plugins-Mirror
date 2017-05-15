@@ -27,7 +27,7 @@ class MIRRORRUNTIME_API UMirrorComponent : public UActorComponent
 {
 	GENERATED_BODY()
 
-	/* Tolerance for update transform, to avoid infinite update.*/
+	/* Tolerance for update transform. */
 	UPROPERTY(EditInstanceOnly, category = "Mirror", meta = (UIMin = 0.0f, UIMax = 0.0001f, ClampMin = 0.0f, ClampMax = 0.0001f))
 	float UpdateTransformTolerance;
 

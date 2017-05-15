@@ -57,10 +57,9 @@ bool UMirrorComponent::GetMirrorLocationAndRotation(FVector& OutLocation, FRotat
 	FVector CenterToMirror = CenterToActor.RotateAngleAxis(180, MirrorAxis);
 	OutLocation = CenterToMirror + CenterLocation;
 
-	FVector ForwardDir = UKismetMathLibrary::GetForwardVector(CurRotation);
-	FVector DesireForward = ForwardDir.RotateAngleAxis(180, MirrorAxis);
-	OutRotation = UKismetMathLibrary::MakeRotationFromAxes(DesireForward, FVector::CrossProduct(MirrorAxis, DesireForward), MirrorAxis);
-
+	FVector Delta = MirrorAxis * 180.f;
+	FRotator DeltaRotation = FRotator(Delta.Y, Delta.Z, Delta.X);
+	OutRotation = FRotator(FQuat(DeltaRotation) * FQuat(CurRotation));
 	return true;
 }
 
@@ -81,6 +80,7 @@ void UMirrorComponent::TransformUpdate(USceneComponent* UpdatedComponent, EUpdat
 		if (!MirrorLocation.Equals(CurrentLocation, UpdateTransformTolerance))
 		{
 			MirrorActor->SetActorRelativeLocation(CurrentLocation);
+			MirrorActor->Modify();
 		}
 
 		if (!MirrrorRotation.Equals(CurrentRotation, UpdateTransformTolerance))
@@ -98,7 +98,7 @@ void UMirrorComponent::TransformUpdate(USceneComponent* UpdatedComponent, EUpdat
 		if (GetMirrorLocationAndRotation(DesireMirrorLocation, DesireMirrorRotation))
 		{
 			if (!DesireMirrorLocation.Equals(MirrorLocation, UpdateTransformTolerance) || 
-				DesireMirrorRotation.Equals(MirrrorRotation, UpdateTransformTolerance))
+				!DesireMirrorRotation.Equals(MirrrorRotation, UpdateTransformTolerance))
 			{
 				MirrorActor->SetActorLocationAndRotation(DesireMirrorLocation, DesireMirrorRotation, false, nullptr, \
 												bTeleportPhysics ? ETeleportType::TeleportPhysics : ETeleportType::None);
